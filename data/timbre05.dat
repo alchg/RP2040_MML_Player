@@ -1,0 +1,9 @@
+WaveformType=1
+TicksAttack=150
+TicksDecay=50
+VolumeSustain=50
+TicksRelease=150
+EnableModulator=1
+VolumeModulator=40
+WaveformTypeModulator=0
+FrequencyRatio=2.5

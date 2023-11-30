@@ -1,0 +1,222 @@
+;main1
+@7v100
+t135
+
+r1
+r1
+r1
+r1
+; 4
+r1
+r1
+r1
+r1
+; 8
+r1
+r1
+r1
+r1
+; 12
+r1
+r1
+r1
+r1
+; 16
+r1
+r1
+r1
+r1
+; 20
+r1
+r1
+r1
+r1
+; 24
+d+8 f8 f+8 g+8 a+ >d+8 c+8<
+a+ d+ a+8 g+8 f+8 f8
+d+8 f8 f+8 g+8 a+ g+8 f+8
+f8 d+8 f8 f+8 f8 d+8 d8 f8
+; 28
+d+8 f8 f+8 g+8 a+ >d+8 c+8<
+a+ d+ a+8 g+8 f+8 f8
+d+8 f8 f+8 g+8 a+ g+8 f+8
+f8 r8 f+ g+ a+
+; 32
+d+8 f8 f+8 g+8 a+ >d+8 c+8<
+a+ d+ a+8 g+8 f+8 f8
+d+8 f8 f+8 g+8 a+ g+8 f+8
+f8 d+8 f8 f+8 f8 d+8 d8 f8
+; 36
+d+8 f8 f+8 g+8 a+ >d+8 c+8<
+a+ d+ a+8 g+8 f+8 f8
+d+8 f8 f+8 g+8 a+ g+8 f+8
+f8 r8 f+ g+ a+
+; 40
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+g+8 f+8 f8 c+8 d+8 r8 c+8 d+8
+f8 f+8 g+8 a+8 d+8 r8 g+8 a+8
+; 44
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+g+8 f+8 f8 c+8 d+8 r8 c+8 d+8
+f8 f+8 g+8 a+8 d+8 r8 g+8 a+8
+; 48
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+g+8 f+8 f8 c+8 d+8 r8 c+8 d+8
+f8 f+8 g+8 a+8 d+8 r8 g+8 a+8
+; 52
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+>c+8 d+8 <a+8 g+8 a+8 r8 >d+8 f8
+f+8 f8 d+8 c+8 <a+ g+8 a+8
+g+8 f+8 f8 c+8 d+8 r8 r
+; 56
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+g+8 f+8 f8 c+8 d+8 r8 c+8 d+8
+f8 f+8 g+8 a+8 d+8 r8 g+8 a+8
+; 60
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+g+8 f+8 f8 c+8 d+8 r8 c+8 d+8
+f8 f+8 g+8 a+8 d+8 r8 g+8 a+8
+; 64
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+g+8 f+8 f8 c+8 d+8 r8 c+8 d+8
+f8 f+8 g+8 a+8 d+8 r8 g+8 a+8
+; 68
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+>c+8 d+8 <a+8 g+8 a+8 r8 >d+8 f8
+f+8 f8 d+8 c+8 <a+ g+8 a+8
+g+8 f+8 f8 c+8 d+8 r8 r
+; 72
+r1
+r1
+r1
+r1
+; 76
+r1
+r1
+r1
+r1
+; 80
+r1
+r1
+r1
+r1
+; 84
+r1
+r1
+r1
+r1
+; 88
+d+8 f8 f+8 g+8 a+ >d+8 c+8<
+a+ d+ a+8 g+8 f+8 f8
+d+8 f8 f+8 g+8 a+ g+8 f+8
+f8 d+8 f8 f+8 f8 d+8 d8 f8
+; 92
+d+8 f8 f+8 g+8 a+ >d+8 c+8<
+a+ d+ a+8 g+8 f+8 f8
+d+8 f8 f+8 g+8 a+ g+8 f+8
+f8 r8 f+ g+ a+
+; 96
+d+8 f8 f+8 g+8 a+ >d+8 c+8<
+a+ d+ a+8 g+8 f+8 f8
+d+8 f8 f+8 g+8 a+ g+8 f+8
+f8 d+8 f8 f+8 f8 d+8 d8 f8
+; 100
+d+8 f8 f+8 g+8 a+ >d+8 c+8<
+a+ d+ a+8 g+8 f+8 f8
+d+8 f8 f+8 g+8 a+ g+8 f+8
+f8 r8 f+ g+ a+
+; 104
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+g+8 f+8 f8 c+8 d+8 r8 c+8 d+8
+f8 f+8 g+8 a+8 d+8 r8 g+8 a+8
+; 108
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+g+8 f+8 f8 c+8 d+8 r8 c+8 d+8
+f8 f+8 g+8 a+8 d+8 r8 g+8 a+8
+; 112
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+g+8 f+8 f8 c+8 d+8 r8 c+8 d+8
+f8 f+8 g+8 a+8 d+8 r8 g+8 a+8
+; 116
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+>c+8 d+8 <a+8 g+8 a+8 r8 >d+8 f8
+f+8 f8 d+8 c+8 <a+ g+8 a+8
+g+8 f+8 f8 c+8 d+8 r8 r
+; 120
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+g+8 f+8 f8 c+8 d+8 r8 c+8 d+8
+f8 f+8 g+8 a+8 d+8 r8 g+8 a+8
+; 124
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+>c+8 d+8 <a+8 g+8 a+8 r8 g+8 a+8
+g+8 f+8 f8 c+8 d+8 r8 c+8 d+8
+f8 f+8 g+8 a+8 d+8 r8 a8 b8
+; 128
+>d8 e8 <b8 a8 b8 r8 a8 b8
+>d8 e8 <b8 a8 b8 r8 a8 b8
+a8 g8 f+8 d8 e8 r8 d8 e8
+f+8 g8 a8 b8 e8 r8 a8 b8
+; 132
+>d8 e8 <b8 a8 b8 r8 a8 b8
+>d8 e8 <b8 a8 b8 r8 >e8 f+8
+g8 f+8 e8 d8 <b a8 b8
+a8 g8 f+8 d8 e8 r8 a8 b8
+; 136
+>d8 e8 <b8 a8 b8 r8 a8 b8
+>d8 e8 <b8 a8 b8 r8 a8 b8
+a8 g8 f+8 d8 e8 r8 d8 e8
+f+8 g8 a8 b8 e8 r8 a8 b8
+; 140
+>d8 e8 <b8 a8 b8 r8 a8 b8
+>d8 e8 <b8 a8 b8 r8 a8 b8
+a8 g8 f+8 d8 e8 r8 d8 e8
+f+8 g8 a8 b8 e8 r8 a8 b8
+; 144
+>d8 e8 <b8 a8 b8 r8 a8 b8
+>d8 e8 <b8 a8 b8 r8 a8 b8
+a8 g8 f+8 d8 e8 r8 d8 e8
+f+8 g8 a8 b8 e8 r8 a8 b8
+; 148
+>d8 e8 <b8 a8 b8 r8 a8 b8
+>d8 e8 <b8 a8 b8 r8 >e8 f+8
+g8 f+8 e8 d8 <b a8 b8
+a8 g8 f+8 d8 e8 r8 a8 b8
+; 152
+>d8 e8 <b8 a8 b8 r8 a8 b8
+>d8 e8 <b8 a8 b8 r8 a8 b8
+a8 g8 f+8 d8 e8 r8 d8 e8
+f+8 g8 a8 b8 e8 r8 a8 b8
+; 156
+>d8 e8 <b8 a8 b8 r8 a8 b8
+>d8 e8 <b8 a8 b8 r8 a8 b8
+a8 g8 f+8 d8 e8 r8 d8 e8
+f+8 g8 a8 b8 e8 r8 a8 b8
+; 160
+>d8 e8 <b8 a8 b8 r8 a8 b8
+>d8 e8 <b8 a8 b8 r8 a8 b8
+a8 g8 f+8 d8 e8 r8 d8 e8
+f+8 g8 a8 b8 e8 r8 a8 b8
+; 164
+>d8 e8 <b8 a8 b8 r8 a8 b8
+>d8 e8 <b8 a8 b8 r8 >e8 f+8
+g8 f+8 e8 d8 <b a8 b8
+a8 g8 f+8 d8 e r
+; 168
+@6v5
+d16 e8. e8 e8  d16 e8. e8 e8
+d16 e8. e8 e8  d16 e8. e8 e8
+v4
+d16 e8. e8 e8  d16 e8. e8 e8
+v3
+d16 e8. e8 e8  d16 e8. e8 e8
+; 172
