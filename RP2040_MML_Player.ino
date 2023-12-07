@@ -137,6 +137,7 @@ struct TrackData{
   bool enable_envelope;
   uint16_t waveform_type;
   bool enable_modulator;
+  uint16_t type_modulator;
   uint16_t waveform_type_modulator;
   uint16_t octave;
   uint16_t frequency;
@@ -219,7 +220,7 @@ void initializeMmlBuffer(){
   
 }
 
-#define TIMBRES 10
+#define TIMBRES 100
 struct TimbreData{
   uint16_t waveform_type;
   bool enable_envelope;
@@ -228,6 +229,7 @@ struct TimbreData{
   uint16_t volume_sustain;
   uint16_t ticks_release;
   bool enable_modulator;
+  uint16_t type_modulator;
   uint16_t waveform_type_modulator;
   uint16_t base_volume_modulator;
   float frequency_ratio;
@@ -243,6 +245,8 @@ TimbreData timbreData[TIMBRES];
 #define DEFAULT_TICKS_DECAY     50
 #define DEFAULT_VOLUME_SUSTAIN  50
 #define DEFAULT_TICKS_RELEASE   50
+#define DEFAULT_MODULATION_TYPE  0
+#define TIMBRE_NUM_LENGTH_MAX    2
 void initializeTimbreData(){
   String temp;
   String number;
@@ -256,6 +260,7 @@ void initializeTimbreData(){
     timbreData[i].volume_sustain = DEFAULT_VOLUME_SUSTAIN;
     timbreData[i].ticks_release = DEFAULT_TICKS_RELEASE;
     timbreData[i].enable_envelope_modulator = true;
+    timbreData[i].type_modulator = DEFAULT_MODULATION_TYPE;
     timbreData[i].ticks_attack_modulator = DEFAULT_TICKS_ATTACK;
     timbreData[i].ticks_decay_modulator = DEFAULT_TICKS_DECAY;
     timbreData[i].volume_sustain_modulator = DEFAULT_VOLUME_SUSTAIN;
@@ -313,6 +318,8 @@ void initializeTimbreData(){
           }else{
             timbreData[i].enable_modulator = true;
           }
+        }else if(key == "TypeModulator"){
+          timbreData[i].type_modulator = value.toInt();
         }else if(key == "VolumeModulator"){
           timbreData[i].base_volume_modulator = value.toInt();
         }else if(key == "WaveformTypeModulator"){
@@ -354,6 +361,7 @@ void initializeTimbreData(){
       Serial.println("VolumeSustain           :" + String(timbreData[i].volume_sustain));
       Serial.println("TicksRelease            :" + String(timbreData[i].ticks_release));
       Serial.println("EnableModulator         :" + String(timbreData[i].enable_modulator));
+      Serial.println("TypeModulator           :" + String(timbreData[i].type_modulator));
       Serial.println("VolumeModulator         :" + String(timbreData[i].base_volume_modulator));
       Serial.println("WaveformTypeModulator   :" + String(timbreData[i].waveform_type_modulator));
       Serial.println("FrequencyRatio          :" + String(timbreData[i].frequency_ratio));
@@ -378,6 +386,7 @@ void setTimbreData(uint16_t channel_index ,uint16_t tone_index){
   trackData[channel_index].volume_sustain = timbreData[tone_index].volume_sustain;
   trackData[channel_index].ticks_release = timbreData[tone_index].ticks_release;
   trackData[channel_index].enable_modulator = timbreData[tone_index].enable_modulator;
+  trackData[channel_index].type_modulator = timbreData[tone_index].type_modulator;
   trackData[channel_index].base_volume_modulator = timbreData[tone_index].base_volume_modulator;
   trackData[channel_index].waveform_type_modulator = timbreData[tone_index].waveform_type_modulator;
   trackData[channel_index].frequency_ratio = timbreData[tone_index].frequency_ratio;
@@ -950,12 +959,21 @@ void initializeTrackData(){
   
 }
 
-uint16_t calculatePhaseModulation(uint16_t carrier_phase ,int16_t modulator_volume){
+uint16_t calculatePhaseModulation(uint16_t channel_index, uint16_t carrier_phase, int16_t modulator_amplitude){
   int16_t phase;
   int16_t carrier_value;
   
-  carrier_value = map(carrier_phase ,0 ,SAMPLE -1,-SAMPLE , SAMPLE -1);
-  phase = map(carrier_value + modulator_volume,-128,127,0,63);
+  if(trackData[channel_index].type_modulator == DEFAULT_MODULATION_TYPE){
+    phase = carrier_phase + modulator_amplitude;  // 0~63,-64~64
+    if(phase < 0){
+      phase = SAMPLE + phase; 
+    }else if(phase >= SAMPLE){
+      phase = phase - SAMPLE;
+    }
+  }else{
+    carrier_value = map(carrier_phase, 0, SAMPLE -1, -SAMPLE, SAMPLE -1);
+    phase = map(carrier_value + modulator_amplitude, -MAX_AMPLITUDE - SAMPLE, MAX_AMPLITUDE + (SAMPLE - 1), 0, 63);
+  }
   
   return phase;
 }
@@ -982,7 +1000,7 @@ void setPwmLevel(){
   for(int i=0;i<CHANNELS;i++){
     if(trackData[i].enable){
       if(trackData[i].enable_modulator){
-        level += waveForm[trackData[i].waveform_type][calculatePhaseModulation(phaseCarrier[i] >> 10, waveForm[trackData[i].waveform_type_modulator][phaseModulator[i] >> 10] * trackData[i].volume_modulator / VOLUME_MAX)] * trackData[i].volume / VOLUME_MAX;
+        level += waveForm[trackData[i].waveform_type][calculatePhaseModulation(i,phaseCarrier[i] >> 10, waveForm[trackData[i].waveform_type_modulator][phaseModulator[i] >> 10] * trackData[i].volume_modulator / VOLUME_MAX)] * trackData[i].volume / VOLUME_MAX;
       }else{
         level += waveForm[trackData[i].waveform_type][phaseCarrier[i] >> 10] * trackData[i].volume / VOLUME_MAX;
       }
@@ -1056,18 +1074,19 @@ void setup() {
   //#define TRIANGLE_WAVE 2
   //#define SAWTOOTH_WAVE 3
   potTrack = 0;
-  //trackData[potTrack].waveform_type = SINE_WAVE;
-  trackData[potTrack].ticks_attack = 50;
-  trackData[potTrack].ticks_decay = 50;
-  trackData[potTrack].volume_sustain = 50;
+  trackData[potTrack].waveform_type = SINE_WAVE;
+  trackData[potTrack].ticks_attack = 10;
+  trackData[potTrack].ticks_decay = 150;
+  //trackData[potTrack].volume_sustain = 50;
   trackData[potTrack].ticks_release = 3840;
-  //trackData[potTrack].waveform_type_modulator = SINE_WAVE;
+  trackData[potTrack].enable_modulator = true;
+  trackData[potTrack].waveform_type_modulator = SINE_WAVE;
   trackData[potTrack].base_volume_modulator = 100;
   //trackData[potTrack].frequency_ratio = 1;
   trackData[potTrack].enable_envelope_modulator = true;
   trackData[potTrack].ticks_attack_modulator = 10;
-  trackData[potTrack].ticks_decay_modulator = 300;
-  trackData[potTrack].volume_sustain_modulator = 15;
+  trackData[potTrack].ticks_decay_modulator = 150;
+  //trackData[potTrack].volume_sustain_modulator = 75;
   trackData[potTrack].ticks_release_modulator = 3840;
   */
 }
@@ -1130,6 +1149,8 @@ void setMmlBuffer(uint16_t channel_index){
 void readPot(uint16_t channel_index){
   
   uint16_t value0 = analogRead(26);
+  trackData[channel_index].volume_sustain = map(value0,0,1023,0,100);
+  /*
   if(value0 <= 1024 / 20 * 1){
     trackData[channel_index].waveform_type = SINE_WAVE;
     trackData[channel_index].waveform_type_modulator = SINE_WAVE;
@@ -1191,18 +1212,12 @@ void readPot(uint16_t channel_index){
     trackData[channel_index].waveform_type = SAWTOOTH_WAVE;
     trackData[channel_index].waveform_type_modulator = NOISE_WAVE;
   }
+  */
   uint16_t value1 = analogRead(27);
-  //trackData[channel_index].base_volume_modulator = map(value1,0,1023,0,UINT16_MAX);
-  //trackData[channel_index].base_volume_modulator = map(value1,0,1023,0,100);
   trackData[channel_index].volume_sustain_modulator = map(value1,0,1023,0,100);
   uint16_t value2 = analogRead(28);
-  //trackData[0].frequency_ratio = float(map(value2,0,1023,0,1000)) / 1000;
-  trackData[channel_index].frequency_ratio = float(map(value2,0,1023,0,10000)) / 1000;
-  //trackData[channel_index].frequency_ratio = float(map(value2,0,1023,0,100)) / 100;
-  //Serial.println(String(trackData[0].waveform_type) + "," + String(trackData[0].waveform_type_modulator) + "," + String(trackData[0].base_volume_modulator) + "," + String(trackData[0].frequency_ratio,3));
-  Serial.println(String(trackData[0].waveform_type) + "," + String(trackData[0].waveform_type_modulator) + "," + String(trackData[0].volume_sustain_modulator) + "," + String(trackData[0].frequency_ratio,3));
-  
-  trackData[channel_index].enable_modulator = true;
+  trackData[channel_index].frequency_ratio = float(map(value2,0,1023,0,15000)) / 1000;
+  Serial.println(String(trackData[0].waveform_type) + "," + String(trackData[0].waveform_type_modulator) + "," + String(trackData[0].volume_sustain) + "," + String(trackData[0].volume_sustain_modulator) + "," + String(trackData[0].frequency_ratio,3));
 }
 
 void tickDelay(unsigned long elapsed_time_micro){
@@ -1310,8 +1325,9 @@ void loop() {
           trackData[i].status_adsr = DECAY;
         }
       }else if(trackData[i].status_adsr == DECAY){
-        if(trackData[i].base_volume > trackData[i].volume_sustain){
-          trackData[i].volume = trackData[i].base_volume - ((trackData[i].base_volume - trackData[i].volume_sustain) * ((trackData[i].tick - trackData[i].ticks_attack) * 100 / trackData[i].ticks_decay) / 100);
+        uint16_t volume_sustain = trackData[i].base_volume * trackData[i].volume_sustain / 100;
+        if(trackData[i].base_volume > volume_sustain){
+          trackData[i].volume = trackData[i].base_volume - ((trackData[i].base_volume - volume_sustain) * ((trackData[i].tick - trackData[i].ticks_attack) * 100 / trackData[i].ticks_decay) / 100);
         }
         if(trackData[i].tick == trackData[i].ticks_attack + trackData[i].ticks_decay){
           trackData[i].status_adsr = SUSTAIN;
@@ -1324,13 +1340,7 @@ void loop() {
             trackData[i].status_adsr = RELEASE;
         }
       }else if(trackData[i].status_adsr == RELEASE){
-        uint16_t volume_sustain;
-        if(trackData[i].base_volume > trackData[i].volume_sustain){
-          volume_sustain = trackData[i].volume_sustain;
-        }else{
-          volume_sustain = trackData[i].base_volume;
-        }
-        
+        uint16_t volume_sustain = trackData[i].base_volume * trackData[i].volume_sustain / 100;
         uint16_t ticks_attack_decay = trackData[i].ticks_attack + trackData[i].ticks_decay;
         uint16_t tick;
         if(trackData[i].ticks <= (ticks_attack_decay + trackData[i].ticks_release)){
@@ -1357,8 +1367,9 @@ void loop() {
           trackData[i].status_adsr_modulator = DECAY;
         }
       }else if(trackData[i].status_adsr_modulator == DECAY){
-        if(trackData[i].base_volume_modulator > trackData[i].volume_sustain_modulator){
-          trackData[i].volume_modulator = trackData[i].base_volume_modulator - ((trackData[i].base_volume_modulator - trackData[i].volume_sustain_modulator) * ((trackData[i].tick - trackData[i].ticks_attack_modulator) * 100 / trackData[i].ticks_decay_modulator) / 100);
+        uint16_t volume_sustain = trackData[i].base_volume_modulator * trackData[i].volume_sustain_modulator / 100;
+        if(trackData[i].base_volume_modulator > volume_sustain){
+          trackData[i].volume_modulator = trackData[i].base_volume_modulator - ((trackData[i].base_volume_modulator - volume_sustain) * ((trackData[i].tick - trackData[i].ticks_attack_modulator) * 100 / trackData[i].ticks_decay_modulator) / 100);
         }
         if(trackData[i].tick == trackData[i].ticks_attack_modulator + trackData[i].ticks_decay_modulator){
           trackData[i].status_adsr_modulator = SUSTAIN;
@@ -1371,13 +1382,7 @@ void loop() {
             trackData[i].status_adsr_modulator = RELEASE;
         }
       }else if(trackData[i].status_adsr_modulator == RELEASE){
-        uint16_t volume_sustain;
-        if(trackData[i].base_volume_modulator > trackData[i].volume_sustain_modulator){
-          volume_sustain = trackData[i].volume_sustain_modulator;
-        }else{
-          volume_sustain = trackData[i].base_volume_modulator;
-        }
-        
+        uint16_t volume_sustain = trackData[i].base_volume_modulator * trackData[i].volume_sustain_modulator / 100;
         uint16_t ticks_attack_decay = trackData[i].ticks_attack_modulator + trackData[i].ticks_decay_modulator;
         uint16_t tick;
         if(trackData[i].ticks <= (ticks_attack_decay + trackData[i].ticks_release_modulator)){

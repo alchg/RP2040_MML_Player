@@ -1,5 +1,5 @@
 ;main1
-@7v100
+@6v100
 t135
 
 r1
@@ -212,11 +212,11 @@ f+8 g8 a8 b8 e8 r8 a8 b8
 g8 f+8 e8 d8 <b a8 b8
 a8 g8 f+8 d8 e r
 ; 168
-@6v5
+@7v5
 d16 e8. e8 e8  d16 e8. e8 e8
-d16 e8. e8 e8  d16 e8. e8 e8
-v4
 d16 e8. e8 e8  d16 e8. e8 e8
 v3
+d16 e8. e8 e8  d16 e8. e8 e8
+v2
 d16 e8. e8 e8  d16 e8. e8 e8
 ; 172
