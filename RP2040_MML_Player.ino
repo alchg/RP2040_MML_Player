@@ -832,16 +832,25 @@ bool setNote(uint16_t channel_index,char note){
   return true;
 }
 
+#define DEFAULT_TIMBRE_NUM_LENGTH_MAX 2
 void setTimbre(uint16_t channel_index){
   char c;
+  char temp[DEFAULT_TIMBRE_NUM_LENGTH_MAX + 1] = {};
+  uint16_t index;
   
-  c = getChar(channel_index);
-  if(isNumber(c)){
-    uint16_t index = c - '0';
-    setTimbreData(channel_index,index);
-  }else{
-    trackData[channel_index].mml_index--;
+  for(uint16_t i=0;i < DEFAULT_TIMBRE_NUM_LENGTH_MAX;i++){
+    c = getChar(channel_index);
+    if(isNumber(c)){
+      temp[i] = c;
+    }else{
+      trackData[channel_index].mml_index--;
+      break;
+    }
   }
+  
+  index = atoi(temp);
+  
+  setTimbreData(channel_index,index);
 }
 
 
@@ -1068,27 +1077,29 @@ void setup() {
   
   digitalWrite(LED_BUILTIN, HIGH);
   
-  /*
+  
   //#define SINE_WAVE     0
   //#define SQUARE_WAVE   1
   //#define TRIANGLE_WAVE 2
   //#define SAWTOOTH_WAVE 3
-  potTrack = 0;
-  trackData[potTrack].waveform_type = SINE_WAVE;
-  trackData[potTrack].ticks_attack = 10;
-  trackData[potTrack].ticks_decay = 150;
+  
+  //potTrack = 0;
+  
+  //trackData[potTrack].waveform_type = SINE_WAVE;
+  //trackData[potTrack].ticks_attack = 10;
+  //trackData[potTrack].ticks_decay = 150;
   //trackData[potTrack].volume_sustain = 50;
-  trackData[potTrack].ticks_release = 3840;
-  trackData[potTrack].enable_modulator = true;
-  trackData[potTrack].waveform_type_modulator = SINE_WAVE;
-  trackData[potTrack].base_volume_modulator = 100;
+  //trackData[potTrack].ticks_release = 3840;
+  //trackData[potTrack].enable_modulator = true;
+  //trackData[potTrack].waveform_type_modulator = SINE_WAVE;
+  //trackData[potTrack].base_volume_modulator = 100;
   //trackData[potTrack].frequency_ratio = 1;
-  trackData[potTrack].enable_envelope_modulator = true;
-  trackData[potTrack].ticks_attack_modulator = 10;
-  trackData[potTrack].ticks_decay_modulator = 150;
+  //trackData[potTrack].enable_envelope_modulator = true;
+  //trackData[potTrack].ticks_attack_modulator = 10;
+  //trackData[potTrack].ticks_decay_modulator = 150;
   //trackData[potTrack].volume_sustain_modulator = 75;
-  trackData[potTrack].ticks_release_modulator = 3840;
-  */
+  //trackData[potTrack].ticks_release_modulator = 3840;
+  
 }
 
 void setMmlBuffer(uint16_t channel_index){
@@ -1149,8 +1160,8 @@ void setMmlBuffer(uint16_t channel_index){
 void readPot(uint16_t channel_index){
   
   uint16_t value0 = analogRead(26);
-  trackData[channel_index].volume_sustain = map(value0,0,1023,0,100);
-  /*
+  //trackData[channel_index].volume_sustain = map(value0,0,1023,0,100);
+  
   if(value0 <= 1024 / 20 * 1){
     trackData[channel_index].waveform_type = SINE_WAVE;
     trackData[channel_index].waveform_type_modulator = SINE_WAVE;
@@ -1212,12 +1223,12 @@ void readPot(uint16_t channel_index){
     trackData[channel_index].waveform_type = SAWTOOTH_WAVE;
     trackData[channel_index].waveform_type_modulator = NOISE_WAVE;
   }
-  */
+  
   uint16_t value1 = analogRead(27);
-  trackData[channel_index].volume_sustain_modulator = map(value1,0,1023,0,100);
+  trackData[channel_index].base_volume_modulator = map(value1,0,1023,0,100);
   uint16_t value2 = analogRead(28);
   trackData[channel_index].frequency_ratio = float(map(value2,0,1023,0,15000)) / 1000;
-  Serial.println(String(trackData[0].waveform_type) + "," + String(trackData[0].waveform_type_modulator) + "," + String(trackData[0].volume_sustain) + "," + String(trackData[0].volume_sustain_modulator) + "," + String(trackData[0].frequency_ratio,3));
+  Serial.println(String(trackData[0].waveform_type) + "," + String(trackData[0].waveform_type_modulator) + "," + String(trackData[0].volume_sustain) + "," + String(trackData[0].base_volume_modulator) + "," + String(trackData[0].frequency_ratio,3));
 }
 
 void tickDelay(unsigned long elapsed_time_micro){
