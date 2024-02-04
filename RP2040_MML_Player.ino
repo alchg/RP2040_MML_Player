@@ -73,6 +73,31 @@ void initializeWaveform(){
   */
 }
 
+#define VOLUME_MAX 100
+int16_t calculateAmplitudeTable[MAX_AMPLITUDE * 2 + 1][VOLUME_MAX + 1];
+void initializeCalculateAmplitudeTable(){
+  for(int i=0;i<MAX_AMPLITUDE * 2 + 1;i++){
+    if(i < MAX_AMPLITUDE){
+      for(int j=0;j <= VOLUME_MAX;j++){
+        calculateAmplitudeTable[i][j] = -((MAX_AMPLITUDE - i) * (j / 100.0));
+      }
+    }else if(i > MAX_AMPLITUDE){
+      for(int k=0;k <= VOLUME_MAX;k++){
+        calculateAmplitudeTable[i][k] = (i - MAX_AMPLITUDE) * (k / 100.0);
+      }
+    }
+  }
+  /*
+  for(int i=0;i<MAX_AMPLITUDE * 2 + 1;i++){
+    for(int j=0;j<VOLUME_MAX + 1;j++){
+      Serial.print(calculateAmplitudeTable[i][j]);
+      Serial.print(",");
+    }
+    Serial.println("");
+  }
+  */
+}
+
 #define NOTES                   88
 #define FREQUENCY_CORRECTION_C4 0.05
 uint16_t frequencyData[NOTES];
@@ -1009,9 +1034,9 @@ void setPwmLevel(){
   for(int i=0;i<CHANNELS;i++){
     if(trackData[i].enable){
       if(trackData[i].enable_modulator){
-        level += waveForm[trackData[i].waveform_type][calculatePhaseModulation(i,phaseCarrier[i] >> 10, waveForm[trackData[i].waveform_type_modulator][phaseModulator[i] >> 10] * trackData[i].volume_modulator / VOLUME_MAX)] * trackData[i].volume / VOLUME_MAX;
+        level += calculateAmplitudeTable[waveForm[trackData[i].waveform_type][calculatePhaseModulation(i,phaseCarrier[i] >> 10, calculateAmplitudeTable[waveForm[trackData[i].waveform_type_modulator][phaseModulator[i] >> 10] + + MAX_AMPLITUDE][trackData[i].volume_modulator])] + MAX_AMPLITUDE][trackData[i].volume];
       }else{
-        level += waveForm[trackData[i].waveform_type][phaseCarrier[i] >> 10] * trackData[i].volume / VOLUME_MAX;
+        level += calculateAmplitudeTable[waveForm[trackData[i].waveform_type][phaseCarrier[i] >> 10] + MAX_AMPLITUDE][trackData[i].volume];
       }
     }
   }
@@ -1031,6 +1056,7 @@ void setup() {
   delay(3000);
   
   initializeFrequency();
+  initializeCalculateAmplitudeTable();
   initializeWaveform();
   
   if (!LittleFS.begin()) {
