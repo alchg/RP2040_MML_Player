@@ -142,7 +142,7 @@ void initializeMmlFile(){
   }
 }
 
-bool isEven(uint16_t value){
+inline bool isEven(uint16_t value){
   
   if((value >> 1) << 1 == value){
     return true;
@@ -423,7 +423,7 @@ void setTimbreData(uint16_t channel_index ,uint16_t tone_index){
   
 }
 
-char getChar(uint16_t channel_index){
+inline char getChar(uint16_t channel_index){
   
   if(trackData[channel_index].mml_index == MML_BUFFER_SIZE){
     Serial.println("Out of buffer.");
@@ -993,7 +993,7 @@ void initializeTrackData(){
   
 }
 
-uint16_t calculatePhaseModulation(uint16_t channel_index, uint16_t carrier_phase, int16_t modulator_amplitude){
+inline uint16_t calculatePhaseModulation(uint16_t channel_index, uint16_t carrier_phase, int16_t modulator_amplitude){
   int16_t phase;
   int16_t carrier_value;
   
