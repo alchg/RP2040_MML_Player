@@ -168,6 +168,7 @@ struct TrackData{
   uint16_t frequency;
   uint16_t frequency_modulator;
   float frequency_ratio;
+  uint16_t default_ticks;
   uint32_t ticks;
   uint32_t tick;
   uint16_t base_volume;
@@ -547,7 +548,6 @@ uint16_t getTicks(uint16_t duration){
 
 
 #define DEFAULT_TICKS_NUM_LENGTH_MAX  3
-uint16_t defaultTicks;
 void setDefaultTicks(uint16_t channel_index){
   char      c;
   char      temp[DEFAULT_TICKS_NUM_LENGTH_MAX + 1] = {};
@@ -574,7 +574,7 @@ void setDefaultTicks(uint16_t channel_index){
     case 32:
     case 64:
     case 128:
-      defaultTicks = getTicks(duration);
+      trackData[channel_index].default_ticks = getTicks(duration);
       break;
     default:
       break;
@@ -683,9 +683,9 @@ void addTieTicks(uint16_t channel_index,char note,char half_step){
             trackData[channel_index].mml_index--;
           }
         }else if(c == '.'){
-          ticks = getDottedTicks(channel_index,defaultTicks);
+          ticks = getDottedTicks(channel_index,trackData[channel_index].default_ticks);
         }else{
-          ticks = defaultTicks;
+          ticks = trackData[channel_index].default_ticks;
           trackData[channel_index].mml_index--;
         }
         
@@ -837,7 +837,7 @@ bool setNote(uint16_t channel_index,char note){
     }
     
   }else if(c == '.'){
-    trackData[channel_index].ticks = getDottedTicks(channel_index,defaultTicks);
+    trackData[channel_index].ticks = getDottedTicks(channel_index,trackData[channel_index].default_ticks);
     
     c = getChar(channel_index);
     if(c == '&'){
@@ -847,10 +847,10 @@ bool setNote(uint16_t channel_index,char note){
     }
     
   }else if(c == '&'){
-    trackData[channel_index].ticks = defaultTicks;
+    trackData[channel_index].ticks = trackData[channel_index].default_ticks;
     addTieTicks(channel_index,note,half_step);
   }else{
-    trackData[channel_index].ticks = defaultTicks;
+    trackData[channel_index].ticks = trackData[channel_index].default_ticks;
     trackData[channel_index].mml_index--;
   }
   
@@ -986,11 +986,11 @@ void setTrackData(uint16_t channel_index){
 void initializeTrackData(){
 
   setTickTime(0);
-  defaultTicks = BEAT_TICKS;
   
   for(int i=0;i < CHANNELS;i++){
     trackData[i].mml_count = mmlFile[i].available();
     trackData[i].octave = DEFAULT_OCTAVE;
+    trackData[i].default_ticks = BEAT_TICKS;
     trackData[i].base_volume = DEFAULT_BASE_VOLUME;
     trackData[i].base_volume_modulator = DEFAULT_BASE_VOLUME;
     setTimbreData(i,DEFAULT_TIMBRE);
