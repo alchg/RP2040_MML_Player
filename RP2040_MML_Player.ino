@@ -597,6 +597,7 @@ bool isNoteNum(uint16_t duration){
       case 64:
       case 96:
       case 128:
+      case 192:
         return true;
       default:
         return false;
